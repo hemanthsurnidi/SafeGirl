@@ -24,6 +24,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy backend code
 COPY backend/ .
 
+# Copy frontend code
+COPY frontend/ /frontend/
+
 # Create data directory for graph cache
 RUN mkdir -p /app/data
 
