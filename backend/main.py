@@ -227,7 +227,36 @@ def load_database_records():
         
         # Mahabubnagar Seeds
         {"name": "Mahabubnagar", "lat": 16.7367, "lng": 77.9889, "type": "place"},
-        {"name": "Mahabubnagar Bus Station", "lat": 16.7320, "lng": 77.9850, "type": "transit"}
+        {"name": "Mahabubnagar Bus Station", "lat": 16.7320, "lng": 77.9850, "type": "transit"},
+        
+        # Additional Hyderabad/Telangana Core Locations
+        {"name": "Mettuguda", "lat": 17.4326, "lng": 78.5204, "type": "place"},
+        {"name": "Mettuguda Metro Station", "lat": 17.4323, "lng": 78.5198, "type": "transit"},
+        {"name": "Nacharam", "lat": 17.4332, "lng": 78.5587, "type": "place"},
+        {"name": "Falaknuma", "lat": 17.32595, "lng": 78.46423, "type": "place"},
+        {"name": "Falaknuma Palace", "lat": 17.3308, "lng": 78.4674, "type": "landmark"},
+        {"name": "Chandrayangutta", "lat": 17.3117, "lng": 78.4727, "type": "place"},
+        {"name": "Tarnaka", "lat": 17.4286, "lng": 78.5378, "type": "place"},
+        {"name": "Tarnaka Metro Station", "lat": 17.4283, "lng": 78.5372, "type": "transit"},
+        {"name": "Uppal", "lat": 17.4018, "lng": 78.5602, "type": "place"},
+        {"name": "Uppal Metro Station", "lat": 17.4014, "lng": 78.5598, "type": "transit"},
+        {"name": "Habsiguda", "lat": 17.4167, "lng": 78.5500, "type": "place"},
+        {"name": "Dilsukhnagar", "lat": 17.3688, "lng": 78.5247, "type": "place"},
+        {"name": "Dilsukhnagar Bus Stand", "lat": 17.3692, "lng": 78.5242, "type": "transit"},
+        {"name": "L.B. Nagar", "lat": 17.3457, "lng": 78.5492, "type": "place"},
+        {"name": "Mehdipatnam", "lat": 17.3958, "lng": 78.4312, "type": "place"},
+        {"name": "Mehdipatnam Bus Depot", "lat": 17.3962, "lng": 78.4308, "type": "transit"},
+        {"name": "Koti", "lat": 17.3822, "lng": 78.4819, "type": "place"},
+        {"name": "Abids", "lat": 17.3903, "lng": 78.4735, "type": "place"},
+        {"name": "Nampally", "lat": 17.3888, "lng": 78.4681, "type": "place"},
+        {"name": "Nampally Railway Station", "lat": 17.3892, "lng": 78.4678, "type": "transit"},
+        {"name": "MGBS Bus Station", "lat": 17.3783, "lng": 78.4812, "type": "transit"},
+        {"name": "JBS Bus Station", "lat": 17.4431, "lng": 78.5005, "type": "transit"},
+        {"name": "Secunderabad Railway Station", "lat": 17.4347, "lng": 78.5016, "type": "transit"},
+        {"name": "Osmania University", "lat": 17.4137, "lng": 78.5283, "type": "college"},
+        {"name": "Kondapur", "lat": 17.4622, "lng": 78.3568, "type": "place"},
+        {"name": "Miyapur", "lat": 17.4933, "lng": 78.3512, "type": "place"},
+        {"name": "Miyapur Metro Station", "lat": 17.4930, "lng": 78.3508, "type": "transit"}
     ]
     for lm in TELANGANA_LANDMARKS:
         seen.add(lm["name"])
