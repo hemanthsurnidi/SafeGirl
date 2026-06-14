@@ -1,0 +1,20 @@
+# Python cache & virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+venv/
+ENV/
+
+# Large files exceeding GitHub's 100MB limit (we will upload this manually on HF)
+backend/data/hyderabad_drive.graphml
+backend/data/crime_records.db
+
+# Local agent logs and caches
+brain/
+cache/
+.gemini/
+.idea/
+.vscode/
