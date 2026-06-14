@@ -1,3 +1,12 @@
+---
+title: SafeGirl
+emoji: 🛡️
+colorFrom: green
+colorTo: blue
+sdk: docker
+pinned: false
+---
+
 # 🛡️ SafeGirl — Hyderabad Safe Route Navigator
 
 A web application that shows **two competing routes** between any two points in Hyderabad:
