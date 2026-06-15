@@ -931,6 +931,35 @@
       .map-floating-btn {
         display: flex !important;
       }
+
+      /* Fix z-index: use position:fixed so floating elements appear above the bottom drawer */
+      .map-floating-btn,
+      .map-floating-popup,
+      .map-floating-actions-bar {
+        position: fixed !important;
+        z-index: 2000 !important;
+      }
+
+      #map-floating-layers-btn {
+        top: 80px !important;
+        right: 12px !important;
+      }
+
+      #map-floating-gps-btn {
+        top: 128px !important;
+        right: 12px !important;
+      }
+
+      #map-floating-layers-popup {
+        top: 80px !important;
+        right: 60px !important;
+      }
+
+      .map-floating-actions-bar {
+        bottom: 55px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+      }
     }
 
     /* Floating Map Controls Styles (Mobile only) */
@@ -1244,13 +1273,10 @@
       <!-- Floating Map Actions Bar (Mobile only) -->
       <div id="map-floating-actions" class="map-floating-actions-bar">
         <button class="floating-action-btn primary" onclick="copyShareRoute()" title="Copy Route Share Link">
-          🔗 <span>Share</span>
+          🔗 <span>Copy Link</span>
         </button>
         <button class="floating-action-btn" onclick="openInGoogleMaps()" title="Open in Google Maps">
           🗺️ <span>Maps</span>
-        </button>
-        <button class="floating-action-btn" onclick="downloadGPXTrack()" title="Download GPX File">
-          📥 <span>GPX</span>
         </button>
       </div>
     </div>
