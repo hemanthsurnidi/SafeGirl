@@ -440,9 +440,13 @@
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--chip-color);
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 5px;
+    }
+
+    .route-chip-title::after {
+      content: ' Route';
     }
 
     .route-chip-title::before {
@@ -453,11 +457,41 @@
       background: var(--chip-color);
     }
 
+    .route-chip-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .route-chip-body {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 4px;
+      width: 100%;
+    }
+
+    .route-chip-badge {
+      font-size: 8.5px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--green);
+      padding: 1.5px 5px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
     .route-chip-main {
       font-size: 18px;
       font-weight: 800;
       color: var(--text);
       line-height: 1.1;
+    }
+
+    .route-chip-sub {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dim);
     }
 
     .route-chip-detail {
@@ -726,22 +760,88 @@
         font-size: 10px;
       }
 
+      /* Responsive Route Grid Overhaul */
       .route-selector-container {
-        flex-direction: row;
-        overflow-x: auto;
-        padding-bottom: 4px;
-        gap: 8px;
-        scrollbar-width: none;
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 6px !important;
+        width: 100% !important;
+        overflow-x: visible !important;
       }
       
-      .route-selector-container::-webkit-scrollbar {
-        display: none;
+      .route-chip {
+        min-width: 0 !important;
+        flex-shrink: 1 !important;
+        padding: 8px 6px !important;
+        border-radius: 8px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 3px !important;
+        text-align: center !important;
       }
 
-      .route-chip {
-        min-width: 250px;
-        flex-shrink: 0;
-        padding: 10px 12px;
+      .route-chip-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 2px !important;
+        width: 100% !important;
+      }
+
+      .route-chip-title {
+        font-size: 9.5px !important;
+        justify-content: center !important;
+      }
+
+      .route-chip-title::after {
+        content: '' !important; /* Remove " Route" suffix on mobile */
+      }
+
+      .route-chip-title::before {
+        width: 4px !important;
+        height: 4px !important;
+      }
+
+      .route-chip-badge {
+        font-size: 7px !important;
+        padding: 1px 3px !important;
+        border-radius: 3px !important;
+      }
+
+      .route-chip-body {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        margin-top: 2px !important;
+        width: 100% !important;
+      }
+
+      .route-chip-main {
+        font-size: 13px !important;
+      }
+
+      .route-chip-sub {
+        font-size: 10px !important;
+      }
+
+      .route-chip-detail {
+        font-size: 9px !important;
+        justify-content: center !important;
+        gap: 3px !important;
+        border-top: none !important;
+        padding-top: 0 !important;
+        margin-top: 2px !important;
+        width: 100% !important;
+      }
+
+      .route-chip-detail span {
+        display: none !important; /* Hide verbose detail label */
+      }
+
+      .route-chip-detail b::before {
+        content: '🛡️ ' !important; /* Simple icon representation */
       }
 
       .column-center {
@@ -815,6 +915,170 @@
       .bottom-panel.bottom-right-panel {
         display: none !important;
       }
+
+      /* Hide static overlays card inside bottom drawer on mobile */
+      #overlays-card {
+        display: none !important;
+      }
+
+      /* Show floating mobile map components */
+      .map-floating-btn {
+        display: flex !important;
+      }
+    }
+
+    /* Floating Map Controls Styles (Mobile only) */
+    .map-floating-btn {
+      display: none;
+      position: absolute;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    #map-floating-layers-btn {
+      top: 80px;
+      right: 12px;
+    }
+
+    #map-floating-gps-btn {
+      top: 128px;
+      right: 12px;
+    }
+
+    .map-floating-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: scale(1.05);
+    }
+
+    .map-floating-popup {
+      display: none;
+      position: absolute;
+      top: 80px;
+      right: 60px;
+      width: 210px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      z-index: 1000;
+      backdrop-filter: blur(12px);
+      padding: 12px;
+      flex-direction: column;
+      gap: 10px;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .map-floating-popup.show {
+      display: flex;
+    }
+
+    .map-floating-popup .popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+    }
+
+    .map-floating-popup .popup-header h4 {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .map-floating-popup .popup-header .close-btn {
+      background: none;
+      border: none;
+      color: var(--dim);
+      cursor: pointer;
+      font-size: 12px;
+      padding: 2px;
+    }
+
+    .map-floating-popup .popup-body-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .map-floating-actions-bar {
+      display: none;
+      position: absolute;
+      bottom: 65px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 6px 12px;
+      box-shadow: var(--shadow);
+      z-index: 1000;
+      backdrop-filter: blur(12px);
+      align-items: center;
+      gap: 8px;
+      max-width: 90%;
+      animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translate(-50%, 15px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    .floating-action-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--text);
+      cursor: pointer;
+      padding: 6px 12px;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .floating-action-btn.primary {
+      background: var(--green-bg);
+      border-color: var(--green);
+      color: #fff;
+    }
+
+    .floating-action-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-1px);
+    }
+
+    /* Bottom drawer pulsing glow keyframes */
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); border-top-color: var(--border); }
+      50% { box-shadow: 0 -6px 15px rgba(16, 185, 129, 0.25); border-top-color: var(--green); }
+    }
+    .pulse-glow {
+      animation: pulseGlow 2s infinite;
     }
   </style>
 </head>
@@ -868,13 +1132,13 @@
         <!-- Safest Chip -->
         <div class="route-chip active" id="chip-safest" onclick="activateRoute('safest')"
              style="--chip-color: var(--green); --chip-glow: var(--green-glow); --chip-bg: var(--green-bg)">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div class="route-chip-title">Safest Route</div>
-            <span style="font-size:8.5px; background:rgba(16,185,129,0.15); color:var(--green); padding:1.5px 5px; border-radius:4px; font-weight:700;">RECOMMENDED</span>
+          <div class="route-chip-header">
+            <div class="route-chip-title">Safest</div>
+            <span class="route-chip-badge">RECOMMENDED</span>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top: 4px;">
+          <div class="route-chip-body">
             <div class="route-chip-main" id="chip-safest-time">-- min</div>
-            <div style="font-size:12px; font-weight:600; color:var(--dim);" id="chip-safest-dist">-- km</div>
+            <div class="route-chip-sub" id="chip-safest-dist">-- km</div>
           </div>
           <div class="route-chip-detail" style="display: none !important;"><span>Safety Score:</span> <b id="chip-safest-score">--/10</b></div>
           <div class="route-chip-detail" style="display: none !important;"><span>Crime Exposure:</span> <b id="chip-safest-crime">--/10</b></div>
@@ -886,12 +1150,12 @@
         <!-- Balanced Chip -->
         <div class="route-chip" id="chip-balanced" onclick="activateRoute('balanced')"
              style="--chip-color: var(--orange); --chip-glow: var(--orange-glow); --chip-bg: var(--orange-bg)">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div class="route-chip-title">Balanced Route</div>
+          <div class="route-chip-header">
+            <div class="route-chip-title">Balanced</div>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top: 4px;">
+          <div class="route-chip-body">
             <div class="route-chip-main" id="chip-balanced-time">-- min</div>
-            <div style="font-size:12px; font-weight:600; color:var(--dim);" id="chip-balanced-dist">-- km</div>
+            <div class="route-chip-sub" id="chip-balanced-dist">-- km</div>
           </div>
           <div class="route-chip-detail" style="display: none !important;"><span>Safety Score:</span> <b id="chip-balanced-score">--/10</b></div>
           <div class="route-chip-detail" style="display: none !important;"><span>Crime Exposure:</span> <b id="chip-balanced-crime">--/10</b></div>
@@ -903,12 +1167,12 @@
         <!-- Fastest Chip -->
         <div class="route-chip" id="chip-fastest" onclick="activateRoute('fastest')"
              style="--chip-color: var(--blue); --chip-glow: var(--blue-glow); --chip-bg: var(--blue-bg)">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div class="route-chip-title">Fastest Route</div>
+          <div class="route-chip-header">
+            <div class="route-chip-title">Fastest</div>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top: 4px;">
+          <div class="route-chip-body">
             <div class="route-chip-main" id="chip-fastest-time">-- min</div>
-            <div style="font-size:12px; font-weight:600; color:var(--dim);" id="chip-fastest-dist">-- km</div>
+            <div class="route-chip-sub" id="chip-fastest-dist">-- km</div>
           </div>
           <div class="route-chip-detail" style="display: none !important;"><span>Safety Score:</span> <b id="chip-fastest-score">--/10</b></div>
           <div class="route-chip-detail" style="display: none !important;"><span>Crime Exposure:</span> <b id="chip-fastest-crime">--/10</b></div>
@@ -919,9 +1183,70 @@
       </div>
     </div>
 
-    <!-- Center Column (Map) -->
+    <!-- Center Column (Map + Floating Overlays & Actions) -->
     <div class="column-center">
       <div id="map"></div>
+
+      <!-- Floating Map Layers Button (Mobile only) -->
+      <button id="map-floating-layers-btn" class="map-floating-btn" onclick="toggleFloatingLayersPopup()" title="Map Overlays">
+        🥞
+      </button>
+
+      <!-- Floating GPS / My Location Button (Mobile only) -->
+      <button id="map-floating-gps-btn" class="map-floating-btn" onclick="useGPSPosition('src-in', true)" title="Find My Location">
+        🎯
+      </button>
+
+      <!-- Floating Map Layers Popup (Mobile only) -->
+      <div id="map-floating-layers-popup" class="map-floating-popup">
+        <div class="popup-header">
+          <h4>🗺️ Map Overlays</h4>
+          <button class="close-btn" onclick="toggleFloatingLayersPopup()">✕</button>
+        </div>
+        <div class="popup-body-content">
+          <div class="toggle-row">
+            <span>🌓 Dark Mode Theme</span>
+            <label class="switch">
+              <input type="checkbox" id="mobile-theme-toggle" onchange="toggleManualTheme()"/>
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <span>🔥 Crime Heatmap</span>
+            <label class="switch">
+              <input type="checkbox" id="mobile-ov-heatmap" onchange="toggleOverlay('heatmap', this)"/>
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <span>🛡️ Safe Havens</span>
+            <label class="switch">
+              <input type="checkbox" id="mobile-ov-havens" checked onchange="toggleOverlay('havens', this)"/>
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <span>Show Unverified Reports</span>
+            <label class="switch">
+              <input type="checkbox" id="mobile-filter-unverified" checked onchange="applyHotspotFilters(this)"/>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating Map Actions Bar (Mobile only) -->
+      <div id="map-floating-actions" class="map-floating-actions-bar">
+        <button class="floating-action-btn primary" onclick="copyShareRoute()" title="Copy Route Share Link">
+          🔗 <span>Share</span>
+        </button>
+        <button class="floating-action-btn" onclick="openInGoogleMaps()" title="Open in Google Maps">
+          🗺️ <span>Maps</span>
+        </button>
+        <button class="floating-action-btn" onclick="downloadGPXTrack()" title="Download GPX File">
+          📥 <span>GPX</span>
+        </button>
+      </div>
     </div>
 
     <!-- Right Column (Settings, Overlays, Corridor Assets) -->
@@ -1102,7 +1427,10 @@
         activeTheme = sysDark ? 'dark' : 'light';
       }
       document.body.classList.toggle('light-theme', activeTheme === 'light');
-      document.getElementById('theme-toggle').checked = (activeTheme === 'dark');
+      const dTheme = document.getElementById('theme-toggle');
+      const mTheme = document.getElementById('mobile-theme-toggle');
+      if (dTheme) dTheme.checked = (activeTheme === 'dark');
+      if (mTheme) mTheme.checked = (activeTheme === 'dark');
       applyThemeBasemap();
     }
 
@@ -1123,6 +1451,12 @@
       activeTheme = activeTheme === 'dark' ? 'light' : 'dark';
       document.body.classList.toggle('light-theme', activeTheme === 'light');
       localStorage.setItem('safegirl_theme', activeTheme);
+      
+      const dTheme = document.getElementById('theme-toggle');
+      const mTheme = document.getElementById('mobile-theme-toggle');
+      if (dTheme) dTheme.checked = (activeTheme === 'dark');
+      if (mTheme) mTheme.checked = (activeTheme === 'dark');
+
       applyThemeBasemap();
     }
 
@@ -1557,16 +1891,32 @@
     overlayLayers.corridors.addTo(map);
     overlayLayers.hotspotCircles.addTo(map);
 
-    function toggleOverlay(name) {
-      const toggleCheck = document.getElementById(`ov-${name}`);
-      if (!toggleCheck) return;
+    function toggleOverlay(name, sourceEl) {
+      const dToggle = document.getElementById(`ov-${name}`);
+      const mToggle = document.getElementById(`mobile-ov-${name}`);
       
-      overlayActiveStates[name] = toggleCheck.checked;
+      let checked = false;
+      if (sourceEl) {
+        checked = sourceEl.checked;
+        if (dToggle && dToggle !== sourceEl) dToggle.checked = checked;
+        if (mToggle && mToggle !== sourceEl) mToggle.checked = checked;
+      } else {
+        checked = dToggle ? dToggle.checked : false;
+      }
+      
+      overlayActiveStates[name] = checked;
       if (overlayActiveStates[name]) {
         overlayLayers[name].addTo(map);
         if (name === 'lighting') drawRouteLightingLayer();
       } else {
         overlayLayers[name].remove();
+      }
+    }
+
+    function toggleFloatingLayersPopup() {
+      const el = document.getElementById('map-floating-layers-popup');
+      if (el) {
+        el.classList.toggle('show');
       }
     }
 
@@ -1644,6 +1994,10 @@
 
       // Show route selector & collapsible panels
       document.getElementById('route-selector').style.display = 'flex';
+      
+      // Show floating actions bar on mobile
+      const mobActions = document.getElementById('map-floating-actions');
+      if (mobActions) mobActions.style.display = 'flex';
       
       // Select Safest by default
       activateRoute('safest');
@@ -1770,6 +2124,16 @@
       document.getElementById('badge-havens-count').textContent = havens.length;
       document.getElementById('badge-services-count').textContent = services.length;
 
+      // Dynamic header text and pulse effect for mobile bottom drawer
+      const mobileHeaderTitle = document.querySelector('.drawer-header-content h3');
+      if (mobileHeaderTitle) {
+        mobileHeaderTitle.innerHTML = `🛡️ ${havens.length} Havens & 🏪 ${services.length} Amenities Nearby`;
+      }
+      const drawerHeader = document.querySelector('.drawer-header');
+      if (drawerHeader) {
+        drawerHeader.classList.add('pulse-glow');
+      }
+
       document.getElementById('panel-havens').style.display = 'block';
       document.getElementById('panel-services').style.display = 'block';
     }
@@ -1877,11 +2241,22 @@
       applyHotspotFilters();
     }
 
-    async function applyHotspotFilters() {
+    async function applyHotspotFilters(sourceEl) {
+      const dUnverified = document.getElementById('filter-unverified');
+      const mUnverified = document.getElementById('mobile-filter-unverified');
+      
+      let showUnverified = true;
+      if (sourceEl) {
+        showUnverified = sourceEl.checked;
+        if (dUnverified && dUnverified !== sourceEl) dUnverified.checked = showUnverified;
+        if (mUnverified && mUnverified !== sourceEl) mUnverified.checked = showUnverified;
+      } else {
+        showUnverified = dUnverified ? dUnverified.checked : true;
+      }
+
       const category = document.getElementById('filter-category').value;
       const severity = document.getElementById('filter-severity').value;
       const minRisk = parseFloat(document.getElementById('filter-min-risk').value);
-      const showUnverified = document.getElementById('filter-unverified').checked;
 
       try {
         const queryParams = new URLSearchParams();
@@ -2177,7 +2552,13 @@
     function toggleMobileDrawer() {
       const drawer = document.getElementById('right-drawer');
       const arrow = document.getElementById('drawer-toggle-arrow');
+      const header = document.querySelector('.drawer-header');
       if (!drawer) return;
+      
+      if (header) {
+        header.classList.remove('pulse-glow');
+      }
+
       if (drawer.classList.contains('expanded')) {
         drawer.classList.remove('expanded');
         if (arrow) arrow.style.transform = 'rotate(0deg)';
@@ -2205,6 +2586,20 @@
       
       const ps = document.getElementById('panel-services');
       if (ps) ps.style.display = 'none';
+
+      // Hide mobile floating actions bar
+      const mobActions = document.getElementById('map-floating-actions');
+      if (mobActions) mobActions.style.display = 'none';
+
+      // Reset mobile drawer header text
+      const mobileHeaderTitle = document.querySelector('.drawer-header-content h3');
+      if (mobileHeaderTitle) {
+        mobileHeaderTitle.innerHTML = `⚙️ Setup & Amenities`;
+      }
+      const drawerHeader = document.querySelector('.drawer-header');
+      if (drawerHeader) {
+        drawerHeader.classList.remove('pulse-glow');
+      }
     }
 
     function fitMapBounds() {
