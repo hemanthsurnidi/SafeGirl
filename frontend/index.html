@@ -863,17 +863,18 @@
         right: 0;
         width: 100%;
         max-width: none;
-        height: 45px; /* Collapsed height by default, showing only header */
+        height: 90px; /* Taller collapsed height so drawer is clearly visible */
         border-left: none;
-        border-top: 1px solid var(--border);
+        border-top: 2px solid var(--green);
         border-radius: 16px 16px 0 0;
         z-index: 1001;
         transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         overflow: hidden;
+        box-shadow: 0 -4px 20px rgba(16, 185, 129, 0.15);
       }
 
       .column-right.expanded {
-        height: 35vh; /* Expanded height */
+        height: 55vh; /* Expanded height */
         overflow-y: auto;
       }
 
@@ -881,12 +882,13 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 8px 16px;
+        padding: 8px 16px 10px;
         background: var(--panel);
         border-bottom: 1px solid var(--border);
         cursor: pointer;
         flex-shrink: 0;
         user-select: none;
+        gap: 2px;
       }
 
       .drawer-handle {
@@ -911,10 +913,31 @@
         color: var(--text);
       }
 
+      .drawer-header-hint {
+        font-size: 10.5px;
+        color: var(--green);
+        font-weight: 600;
+        text-align: center;
+        width: 100%;
+        letter-spacing: 0.02em;
+      }
+
+      @keyframes bounceArrow {
+        0%, 100% { transform: translateY(0); }
+        40%       { transform: translateY(-4px); }
+        60%       { transform: translateY(-2px); }
+      }
+
       .drawer-toggle-icon {
-        font-size: 11px;
-        color: var(--dim);
-        transition: transform 0.3s ease;
+        font-size: 18px;
+        color: var(--green);
+        animation: bounceArrow 1.6s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+
+      .column-right.expanded .drawer-toggle-icon {
+        animation: none;
+        transform: rotate(180deg);
       }
 
       .bottom-panel.bottom-left-panel, 
@@ -956,7 +979,7 @@
       }
 
       .map-floating-actions-bar {
-        bottom: 55px !important;
+        bottom: 100px !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
       }
@@ -2154,9 +2177,13 @@
       document.getElementById('badge-services-count').textContent = services.length;
 
       // Dynamic header text and pulse effect for mobile bottom drawer
-      const mobileHeaderTitle = document.querySelector('.drawer-header-content h3');
-      if (mobileHeaderTitle) {
-        mobileHeaderTitle.innerHTML = `🛡️ ${havens.length} Havens & 🏪 ${services.length} Amenities Nearby`;
+      const drawerTitle = document.getElementById('drawer-title');
+      if (drawerTitle) {
+        drawerTitle.textContent = `🛡️ ${havens.length} Havens & 🏪 ${services.length} Nearby`;
+      }
+      const drawerHint = document.getElementById('drawer-hint');
+      if (drawerHint) {
+        drawerHint.textContent = `↑ Tap to explore ${havens.length + services.length} safety spots`;
       }
       const drawerHeader = document.querySelector('.drawer-header');
       if (drawerHeader) {
@@ -2620,10 +2647,14 @@
       const mobActions = document.getElementById('map-floating-actions');
       if (mobActions) mobActions.style.display = 'none';
 
-      // Reset mobile drawer header text
-      const mobileHeaderTitle = document.querySelector('.drawer-header-content h3');
-      if (mobileHeaderTitle) {
-        mobileHeaderTitle.innerHTML = `⚙️ Setup & Amenities`;
+      // Reset mobile drawer header text and hint
+      const drawerTitle = document.getElementById('drawer-title');
+      if (drawerTitle) {
+        drawerTitle.innerHTML = `🛡️ Safe Havens & Amenities`;
+      }
+      const drawerHint = document.getElementById('drawer-hint');
+      if (drawerHint) {
+        drawerHint.textContent = 'Tap to explore nearby safety spots';
       }
       const drawerHeader = document.querySelector('.drawer-header');
       if (drawerHeader) {
