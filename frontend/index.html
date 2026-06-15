@@ -511,9 +511,15 @@
     /* ═══════════ UTILITY ACTIONS BAR ═════════════════════════════════ */
     .utility-actions {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: 1fr;
       gap: 6px;
       width: 100%;
+    }
+
+    @media (max-width: 800px) {
+      #utility-actions-bar {
+        display: none !important;
+      }
     }
 
     .action-btn {
@@ -1261,11 +1267,8 @@
       </div>
 
       <!-- Utility Actions -->
-      <div class="utility-actions">
-        <button class="action-btn" onclick="copyShareRoute()">🔗 Copy Link</button>
-        <button class="action-btn" onclick="saveRouteCollection()">💾 Save Route</button>
-        <button class="action-btn" onclick="downloadGPXTrack()">📥 GPX Track</button>
-        <button class="action-btn" onclick="openInGoogleMaps()">🗺️ Google Maps</button>
+      <div class="utility-actions" id="utility-actions-bar">
+        <button class="action-btn" onclick="openInGoogleMaps()" style="grid-column: 1 / -1; width: 100%;">🗺️ Open in Google Maps</button>
       </div>
 
       <!-- Weights tuning slider card -->
