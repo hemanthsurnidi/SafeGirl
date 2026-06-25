@@ -863,18 +863,19 @@
         right: 0;
         width: 100%;
         max-width: none;
-        height: 90px; /* Taller collapsed height so drawer is clearly visible */
+        height: 55vh; /* Always expanded height */
+        transform: translateY(calc(100% - 90px)); /* Collapsed state */
         border-left: none;
         border-top: 2px solid var(--green);
         border-radius: 16px 16px 0 0;
         z-index: 1001;
-        transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         overflow: hidden;
         box-shadow: 0 -4px 20px rgba(16, 185, 129, 0.15);
       }
 
       .column-right.expanded {
-        height: 55vh; /* Expanded height */
+        transform: translateY(0); /* Expanded state */
         overflow-y: auto;
       }
 
@@ -999,7 +1000,6 @@
       cursor: pointer;
       z-index: 1000;
       box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
       align-items: center;
       justify-content: center;
       transition: all 0.2s ease;
@@ -1031,7 +1031,6 @@
       border-radius: 12px;
       box-shadow: var(--shadow);
       z-index: 1000;
-      backdrop-filter: blur(12px);
       padding: 12px;
       flex-direction: column;
       gap: 10px;
@@ -1090,7 +1089,6 @@
       padding: 6px 12px;
       box-shadow: var(--shadow);
       z-index: 1000;
-      backdrop-filter: blur(12px);
       align-items: center;
       gap: 8px;
       max-width: 90%;
@@ -1132,8 +1130,8 @@
 
     /* Bottom drawer pulsing glow keyframes */
     @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); border-top-color: var(--border); }
-      50% { box-shadow: 0 -6px 15px rgba(16, 185, 129, 0.25); border-top-color: var(--green); }
+      0%, 100% { border-top-color: var(--border); }
+      50% { border-top-color: var(--green); }
     }
     .pulse-glow {
       animation: pulseGlow 2s infinite;
@@ -1310,9 +1308,10 @@
       <div class="drawer-header" onclick="toggleMobileDrawer()">
         <div class="drawer-handle"></div>
         <div class="drawer-header-content">
-          <h3>⚙️ Setup & Amenities</h3>
+          <h3 id="drawer-title">🛡️ Safe Havens & Amenities</h3>
           <span class="drawer-toggle-icon" id="drawer-toggle-arrow">▲</span>
         </div>
+        <div class="drawer-header-hint" id="drawer-hint">Tap to explore nearby safety spots</div>
       </div>
 
       <!-- Utility Actions -->
