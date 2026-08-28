@@ -141,6 +141,40 @@ map.on('click', (e) => {
 /* ══════════════════════════════════════════════════════════════════
    9. GEOCODING AUTOCOMPLETE (Nominatim, locked to Hyderabad)
 ══════════════════════════════════════════════════════════════════ */
+
+// Hardcoded common locations to solve Nominatim's strict typo issues
+const LOCAL_POIS = [
+  { name: "Kukatpally, Hyderabad", lat: 17.4849, lon: 78.4079, aliases: ["kukutpally", "kphp"] },
+  { name: "Secunderabad Railway Station", lat: 17.4337, lon: 78.5016, aliases: ["secundrabad", "secunderabad"] },
+  { name: "Gachibowli, Hyderabad", lat: 17.4401, lon: 78.3489, aliases: ["gachibowli", "dlf"] },
+  { name: "Uppal, Hyderabad", lat: 17.3984, lon: 78.5583, aliases: ["upal", "uppal"] },
+  { name: "Madhapur, Hyderabad", lat: 17.4483, lon: 78.3915, aliases: ["madhapur", "hitech"] },
+  { name: "L B Nagar, Hyderabad", lat: 17.3457, lon: 78.5522, aliases: ["lbnagar", "l b nagar", "lb nagar"] },
+  { name: "Charminar, Hyderabad", lat: 17.3616, lon: 78.4747, aliases: ["charminar"] },
+  { name: "Mehdipatnam, Hyderabad", lat: 17.3916, lon: 78.4398, aliases: ["mehdipatnam", "medipatnam"] },
+  { name: "Jubilee Hills, Hyderabad", lat: 17.4326, lon: 78.4071, aliases: ["jubilee"] },
+  { name: "Ameerpet, Hyderabad", lat: 17.4375, lon: 78.4482, aliases: ["amerpet", "ameerpet"] },
+  { name: "Miyapur, Hyderabad", lat: 17.4968, lon: 78.3614, aliases: ["miyapur"] },
+  { name: "Falaknuma, Hyderabad", lat: 17.3292, lon: 78.4684, aliases: ["falaknuma"] },
+  { name: "Tolichowki, Hyderabad", lat: 17.3989, lon: 78.4137, aliases: ["tolichowki"] },
+  { name: "Rajiv Gandhi International Airport (RGIA)", lat: 17.2403, lon: 78.4294, aliases: ["airport", "shamshabad"] },
+  { name: "Lingampally, Hyderabad", lat: 17.4834, lon: 78.3159, aliases: ["lingampally"] }
+];
+
+function fuzzyMatch(str, query) {
+  const s = str.toLowerCase();
+  const q = query.toLowerCase();
+  if (s.includes(q)) return true;
+  // allow minor typos (like kukutpally)
+  let i = 0, j = 0;
+  let matches = 0;
+  while (i < s.length && j < q.length) {
+    if (s[i] === q[j]) { matches++; j++; }
+    i++;
+  }
+  return matches >= q.length - 1; // allow 1 missing/wrong char sequence
+}
+
 function setupAutocomplete(inputId, suggestId, isSrc) {
   const inp = document.getElementById(inputId);
   const sgBox = document.getElementById(suggestId);
@@ -153,22 +187,35 @@ function setupAutocomplete(inputId, suggestId, isSrc) {
 
     timer = setTimeout(async () => {
       try {
-        const url = `${NOM_URL}?q=${encodeURIComponent(q + ' Telangana India')}`
-          + `&format=json&limit=6&countrycodes=in&bounded=1&viewbox=${TELANGANA_VBOX}`;
-        const res  = await fetch(url, { headers: { 'Accept-Language': 'en' } });
-        const data = await res.json();
+        let hits = [];
+        const qLower = q.toLowerCase();
+        
+        // 1. Try local list first to handle typos (e.g. kukutpally)
+        LOCAL_POIS.forEach(p => {
+          if (fuzzyMatch(p.name, qLower) || p.aliases.some(a => fuzzyMatch(a, qLower))) {
+            hits.push({ display_name: p.name, lat: p.lat, lon: p.lon, type: 'local' });
+          }
+        });
 
-        // Keep only results that fall inside Telangana bounding box
-        const hits = data.filter(r => TELANGANA_BOUNDS.contains([+r.lat, +r.lon]));
+        // 2. If no local matches, fallback to Nominatim
+        if (hits.length === 0) {
+          const url = `${NOM_URL}?q=${encodeURIComponent(q + ' Telangana India')}`
+            + `&format=json&limit=6&countrycodes=in&bounded=1&viewbox=${TELANGANA_VBOX}`;
+          const res  = await fetch(url, { headers: { 'Accept-Language': 'en' } });
+          const data = await res.json();
+          const nomHits = data.filter(r => TELANGANA_BOUNDS.contains([+r.lat, +r.lon]));
+          hits = hits.concat(nomHits);
+        }
 
         sgBox.innerHTML = '';
         if (!hits.length) {
-          sgBox.innerHTML = `<div class="sg-empty">No Telangana results for "${q}"</div>`;
+          sgBox.innerHTML = `<div class="sg-empty">No results found for "${q}"</div>`;
         } else {
           hits.forEach(r => {
             const parts = r.display_name.split(',');
             const short = parts.slice(0, 3).join(', ').trim();
-            const icon  = r.type === 'station' ? '🚉'
+            const icon  = r.type === 'local' ? '📍'
+                        : r.type === 'station' ? '🚉'
                         : r.type === 'police'  ? '🚔'
                         : r.type === 'hospital'? '🏥'
                         : '📍';
@@ -180,19 +227,20 @@ function setupAutocomplete(inputId, suggestId, isSrc) {
               sgBox.style.display = 'none';
               const la = +r.lat, lo = +r.lon;
               if (isSrc) { placeStart(la, lo, short); map.setView([la, lo], 15, { animate: true }); }
-              else        { placeDest(la, lo, short);  map.setView([la, lo], 15, { animate: true }); }
+              else       { placeDest(la, lo, short);  map.setView([la, lo], 15, { animate: true }); }
             });
             sgBox.appendChild(el);
           });
         }
         sgBox.style.display = 'block';
       } catch (e) { console.warn('Geocode error:', e); }
-    }, 400);
+    }, 300);
   });
 
   inp.addEventListener('blur',  () => setTimeout(() => { sgBox.style.display = 'none'; }, 200));
   inp.addEventListener('focus', () => { if (sgBox.children.length) sgBox.style.display = 'block'; });
 }
+
 
 setupAutocomplete('src-in', 'sg-src', true);
 setupAutocomplete('dst-in', 'sg-dst', false);
