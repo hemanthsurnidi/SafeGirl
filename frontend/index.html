@@ -46,6 +46,18 @@
       --red-glow: rgba(244, 63, 94, 0.35);
     }
 
+
+    .light-theme .card-title button,
+    .light-theme .action-btn,
+    .light-theme .icon-btn {
+      color: var(--dim) !important;
+    }
+    .light-theme .card-title button:hover,
+    .light-theme .action-btn:hover,
+    .light-theme .icon-btn:hover {
+      color: var(--text) !important;
+      background: rgba(0,0,0,0.08) !important;
+    }
     .light-theme {
       --bg: #f3f4f6;
       --panel: #ffffff;
@@ -1474,8 +1486,8 @@
       if (saved) {
         activeTheme = saved;
       } else {
-        const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        activeTheme = sysDark ? 'dark' : 'light';
+        // Default to light theme always
+        activeTheme = 'light';
       }
       document.body.classList.toggle('light-theme', activeTheme === 'light');
       const dTheme = document.getElementById('theme-toggle');
@@ -1488,7 +1500,7 @@
     function applyThemeBasemap() {
       if (basemapLayer) basemapLayer.remove();
       const url = activeTheme === 'light'
-        ? 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+        ? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
         : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
       basemapLayer = L.tileLayer(url, {
         attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
