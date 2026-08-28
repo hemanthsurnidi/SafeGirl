@@ -1231,7 +1231,7 @@
           </div>
           <div class="route-chip-detail" style="display: none !important;"><span>Safety Score:</span> <b id="chip-safest-score">--/10</b></div>
           <div class="route-chip-detail" style="display: none !important;"><span>Crime Exposure:</span> <b id="chip-safest-crime">--/10</b></div>
-          <div class="route-chip-detail"><span>Nearby Safe Havens:</span> <b id="chip-safest-havens">--</b></div>
+          <div class="route-chip-detail"><span>Nearby Safe Spots:</span> <b id="chip-safest-havens">--</b></div>
           <div class="route-chip-detail" style="display: none !important;"><span>Travel Score:</span> <b id="chip-safest-travel">--/10</b></div>
           <div class="route-chip-detail" style="display: none !important;"><span>Balanced Score:</span> <b id="chip-safest-balanced">--/10</b></div>
         </div>
@@ -1243,7 +1243,7 @@
         <div class="quick-actions-chip" style="display: flex; gap: 6px; justify-content: flex-end; align-items: center; padding-right: 4px; height: 100%;">
           <button class="icon-btn" onclick="toggleManualTheme()" style="background:var(--card); border:1px solid var(--border); font-size:18px; cursor:pointer; padding:8px; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1);" title="Theme">🌓</button>
           <button class="icon-btn" onclick="let dt=document.getElementById('ov-heatmap'); if(dt){dt.checked=!dt.checked; toggleOverlay('heatmap',dt);}" style="background:var(--card); border:1px solid var(--border); font-size:18px; cursor:pointer; padding:8px; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1);" title="Heatmap">🔴</button>
-          <button class="icon-btn" onclick="let dt=document.getElementById('ov-havens'); if(dt){dt.checked=!dt.checked; toggleOverlay('havens',dt);}" style="background:var(--card); border:1px solid var(--border); font-size:18px; cursor:pointer; padding:8px; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1);" title="Safe Havens">🏥</button>
+          <button class="icon-btn" onclick="let dt=document.getElementById('ov-havens'); if(dt){dt.checked=!dt.checked; toggleOverlay('havens',dt);}" style="background:var(--card); border:1px solid var(--border); font-size:18px; cursor:pointer; padding:8px; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1);" title="Safe Spots">🏥</button>
         </div>
 
         <!-- Fastest Chip -->
@@ -1257,7 +1257,7 @@
           </div>
           <div class="route-chip-detail" style="display: none !important;"><span>Safety Score:</span> <b id="chip-fastest-score">--/10</b></div>
           <div class="route-chip-detail" style="display: none !important;"><span>Crime Exposure:</span> <b id="chip-fastest-crime">--/10</b></div>
-          <div class="route-chip-detail"><span>Nearby Safe Havens:</span> <b id="chip-fastest-havens">--</b></div>
+          <div class="route-chip-detail"><span>Nearby Safe Spots:</span> <b id="chip-fastest-havens">--</b></div>
           <div class="route-chip-detail" style="display: none !important;"><span>Travel Score:</span> <b id="chip-fastest-travel">--/10</b></div>
           <div class="route-chip-detail" style="display: none !important;"><span>Balanced Score:</span> <b id="chip-fastest-balanced">--/10</b></div>
         </div>
@@ -1300,7 +1300,7 @@
             </label>
           </div>
           <div class="toggle-row">
-            <span>🛡️ Safe Havens</span>
+            <span>🛡️ Safe Spots</span>
             <label class="switch">
               <input type="checkbox" id="mobile-ov-havens" checked onchange="toggleOverlay('havens', this)"/>
               <span class="slider"></span>
@@ -1327,7 +1327,7 @@
       <div class="drawer-header" onclick="toggleMobileDrawer()">
         <div class="drawer-handle"></div>
         <div class="drawer-header-content">
-          <h3 id="drawer-title">🛡️ Safe Havens & Amenities</h3>
+          <h3 id="drawer-title">🛡️ Safe Spots & Amenities</h3>
           <span class="drawer-toggle-icon" id="drawer-toggle-arrow">▲</span>
         </div>
         <div class="drawer-header-hint" id="drawer-hint">Tap to explore nearby safety spots</div>
@@ -1387,7 +1387,7 @@
         </div>
 
         <div class="toggle-row">
-          <span>🛡️ Safe Havens</span>
+          <span>🛡️ Safe Spots</span>
           <label class="switch">
             <input type="checkbox" id="ov-havens" checked onchange="toggleOverlay('havens')"/>
             <span class="slider"></span>
@@ -1435,10 +1435,10 @@
         
       </div>
 
-      <!-- Safe Havens along Corridor -->
+      <!-- Safe Spots along Corridor -->
       <div class="card bottom-panel" id="panel-havens" style="display: none;">
         <div class="card-title" onclick="toggleBottomPanel('panel-havens')" style="cursor:pointer;">
-          <span>🛡️ Safe Havens Along Route</span>
+          <span>🛡️ Safe Spots Along Route</span>
           <span style="font-size:9.5px; background:rgba(255,255,255,0.08); padding:2px 6px; border-radius:8px; color:#fff; font-weight:700;" id="badge-havens-count">0</span>
         </div>
         <div class="panel-body" id="list-havens"></div>
@@ -2053,7 +2053,7 @@
       document.getElementById(`chip-${type}-score`).textContent = `${metrics.safety_rating}/10`;
       document.getElementById(`chip-${type}-crime`).textContent = `${metrics.avg_crime_score}/10`;
       
-      // Count Safe Havens
+      // Count Safe Spots
       const havenCount = facilities.filter(f => 
         ['police', 'hospital', 'clinic', 'fire_station', 'emergency_shelter'].includes(f.type)
       ).length;
@@ -2167,7 +2167,7 @@
       // Dynamic header text and pulse effect for mobile bottom drawer
       const drawerTitle = document.getElementById('drawer-title');
       if (drawerTitle) {
-        drawerTitle.textContent = `🛡️ ${havens.length} Havens & 🏪 ${services.length} Nearby`;
+        drawerTitle.textContent = `🛡️ ${havens.length} Spots & 🏪 ${services.length} Nearby`;
       }
       const drawerHint = document.getElementById('drawer-hint');
       if (drawerHint) {
@@ -2278,7 +2278,7 @@
           overlayLayers.audits.addLayer(m);
         });
       } catch (err) {
-        console.warn('Havens fetch error: ', err);
+        console.warn('Spots fetch error: ', err);
       }
 
       // 2. Fetch crime hotspots using current filters
@@ -2628,7 +2628,7 @@
       // Reset mobile drawer header text and hint
       const drawerTitle = document.getElementById('drawer-title');
       if (drawerTitle) {
-        drawerTitle.innerHTML = `🛡️ Safe Havens & Amenities`;
+        drawerTitle.innerHTML = `🛡️ Safe Spots & Amenities`;
       }
       const drawerHint = document.getElementById('drawer-hint');
       if (drawerHint) {
