@@ -573,7 +573,7 @@ def score_osrm_route(coords, alpha, beta, distance_m, duration_sec):
     # Cost structures to select Fastest, Safest, Balanced
     cost_safest = total_m * (1.0 + 150.0 * (avg_c / 10.0) + 150.0 * (avg_i / 10.0))
     cost_balanced = total_m * (1.0 + 10.0 * (avg_c / 10.0) + 10.0 * (avg_i / 10.0))
-    cost_fastest = duration_sec  # optimized for travel duration
+    cost_fastest = total_m  # optimized for shortest physical distance to avoid user confusion
 
     return {
         "route": coords,
@@ -815,7 +815,7 @@ def safe_route(
             dst = ox.nearest_nodes(G, end_lng,   end_lat)
 
             # Three weight configurations
-            wfn_fastest = lambda u, v, d: min(float(edge_data.get("travel_time", 1.0)) for edge_data in d.values())
+            wfn_fastest = lambda u, v, d: min(float(edge_data.get("length", 1.0)) for edge_data in d.values())
             wfn_safest = make_weight_fn(150.0, 150.0)
             wfn_balanced = make_weight_fn(10.0, 10.0)
 
