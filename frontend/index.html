@@ -1215,12 +1215,7 @@
           <div class="route-chip-detail" style="display: none !important;"><span>Balanced Score:</span> <b id="chip-safest-balanced">--/10</b></div>
         </div>
 
-        <!-- Balanced Chip -->
-        <div class="route-chip" id="chip-balanced" onclick="activateRoute('balanced')"
-             style="--chip-color: var(--orange); --chip-glow: var(--orange-glow); --chip-bg: var(--orange-bg)">
-          <div class="route-chip-header">
-            <div class="route-chip-title">Balanced</div>
-          </div>
+        
           <div class="route-chip-body">
             <div class="route-chip-main" id="chip-balanced-time">-- min</div>
             <div class="route-chip-sub" id="chip-balanced-dist">-- km</div>
@@ -1988,7 +1983,7 @@
        ════════════════════════════════════════════════════════════════ */
     let computedRoutesData = null;
     let activeRouteType = 'safest';
-    let routePolylines = { safest: null, balanced: null, fastest: null };
+    let routePolylines = { safest: null, fastest: null };
 
     async function runSafetyCalculation() {
       if (!startCoords || !destCoords) {
@@ -2023,10 +2018,10 @@
     function renderRoutesOnMap() {
       if (!computedRoutesData) return;
 
-      const types = ['safest', 'balanced', 'fastest'];
-      const colors = { safest: '#10b981', balanced: '#f97316', fastest: '#3b82f6' };
-      const weights = { safest: 7.5, balanced: 6.0, fastest: 4.5 };
-      const opacities = { safest: 0.9, balanced: 0.75, fastest: 0.6 };
+      const types = ['safest', 'fastest'];
+      const colors = { safest: '#10b981', fastest: '#3b82f6' };
+      const weights = { safest: 7.5, fastest: 4.5 };
+      const opacities = { safest: 0.9, fastest: 0.6 };
 
       types.forEach(type => {
         const pathData = computedRoutesData[type];
@@ -2094,7 +2089,7 @@
       if (!computedRoutesData) return;
 
       // Toggle Active class in Route selectors
-      const chips = ['safest', 'balanced', 'fastest'];
+      const chips = ['safest', 'fastest'];
       chips.forEach(k => {
         const el = document.getElementById(`chip-${k}`);
         if (el) el.classList.toggle('active', k === type);

@@ -538,7 +538,6 @@ def score_osrm_route(coords, alpha, beta, distance_m, duration_sec):
         return {
             "route": coords,
             "cost_safest": 999999.0,
-            "cost_balanced": 999999.0,
             "cost_fastest": 999999.0,
             "metrics": {
                 "distance_km": 0.0,
@@ -572,13 +571,11 @@ def score_osrm_route(coords, alpha, beta, distance_m, duration_sec):
     
     # Cost structures to select Fastest, Safest, Balanced
     cost_safest = total_m * (1.0 + 150.0 * (avg_c / 10.0) + 150.0 * (avg_i / 10.0))
-    cost_balanced = total_m * (1.0 + 10.0 * (avg_c / 10.0) + 10.0 * (avg_i / 10.0))
     cost_fastest = total_m  # optimized for shortest physical distance to avoid user confusion
 
     return {
         "route": coords,
         "cost_safest": cost_safest,
-        "cost_balanced": cost_balanced,
         "cost_fastest": cost_fastest,
         "metrics": {
             "distance_km":           round(total_m / 1000.0, 2),
@@ -817,7 +814,6 @@ def safe_route(
             # Three weight configurations
             wfn_fastest = lambda u, v, d: min(float(edge_data.get("length", 1.0)) for edge_data in d.values())
             wfn_safest = make_weight_fn(150.0, 150.0)
-            wfn_balanced = make_weight_fn(10.0, 10.0)
 
             # 1. Fastest local route
             try:
@@ -835,23 +831,16 @@ def safe_route(
                 p_s = nx.shortest_path(G_und, src, dst, weight=wfn_safest)
                 use_gs = G_und
 
-            # 3. Balanced local route
-            try:
-                p_b = nx.shortest_path(G, src, dst, weight=wfn_balanced)
-                use_gb = G
-            except nx.NetworkXNoPath:
-                p_b = nx.shortest_path(G_und, src, dst, weight=wfn_balanced)
-                use_gb = G_und
+
 
             # Extract metrics & corridors
             coords_f, metrics_f = extract_metrics(p_f, use_gf, speed_mps=9.7) # 35km/h
             coords_s, metrics_s = extract_metrics(p_s, use_gs, speed_mps=8.3) # 30km/h
-            coords_b, metrics_b = extract_metrics(p_b, use_gb, speed_mps=9.1) # 33km/h
 
             # Calculate Travel Score and Balanced Score
-            min_duration = min(metrics_f["duration"], metrics_s["duration"], metrics_b["duration"])
+            min_duration = min(metrics_f["duration"], metrics_s["duration"])
             
-            for m in [metrics_f, metrics_s, metrics_b]:
+            for m in [metrics_f, metrics_s]:
                 dur = m["duration"]
                 m["travel_score"] = round(10.0 * (min_duration / max(1, dur)), 1)
                 m["balanced_score"] = round(0.5 * m["safety_rating"] + 0.5 * m["travel_score"], 1)
@@ -859,13 +848,11 @@ def safe_route(
             # public facilities corridor
             fac_f = find_facilities_along_corridor(coords_f)
             fac_s = find_facilities_along_corridor(coords_s)
-            fac_b = find_facilities_along_corridor(coords_b)
 
             return {
                 "status": "success",
                 "fastest": { "route": coords_f, "metrics": metrics_f, "facilities": fac_f },
-                "safest": { "route": coords_s, "metrics": metrics_s, "facilities": fac_s },
-                "balanced": { "route": coords_b, "metrics": metrics_b, "facilities": fac_b }
+                "safest": { "route": coords_s, "metrics": metrics_s, "facilities": fac_s }
             }
 
         except Exception as e:
@@ -894,12 +881,11 @@ def safe_route(
         # Select the three routes (Fastest, Safest, Balanced)
         r_fastest = min(scored_routes, key=lambda x: x["cost_fastest"])
         r_safest = min(scored_routes, key=lambda x: x["cost_safest"])
-        r_balanced = min(scored_routes, key=lambda x: x["cost_balanced"])
 
         # Calculate Travel Score and Balanced Score for OSRM routes
-        min_duration = min(r_fastest["metrics"]["duration"], r_safest["metrics"]["duration"], r_balanced["metrics"]["duration"])
+        min_duration = min(r_fastest["metrics"]["duration"], r_safest["metrics"]["duration"])
         
-        for r in [r_fastest, r_safest, r_balanced]:
+        for r in [r_fastest, r_safest]:
             dur = r["metrics"]["duration"]
             r["metrics"]["travel_score"] = round(10.0 * (min_duration / max(1, dur)), 1)
             r["metrics"]["balanced_score"] = round(0.5 * r["metrics"]["safety_rating"] + 0.5 * r["metrics"]["travel_score"], 1)
@@ -907,13 +893,11 @@ def safe_route(
         # Detect corridor facilities
         fac_f = find_facilities_along_corridor(r_fastest["route"])
         fac_s = find_facilities_along_corridor(r_safest["route"])
-        fac_b = find_facilities_along_corridor(r_balanced["route"])
 
         return {
             "status": "success",
             "fastest": { "route": r_fastest["route"], "metrics": r_fastest["metrics"], "facilities": fac_f },
             "safest": { "route": r_safest["route"], "metrics": r_safest["metrics"], "facilities": fac_s },
-            "balanced": { "route": r_balanced["route"], "metrics": r_balanced["metrics"], "facilities": fac_b }
         }
 
     except Exception as e:
