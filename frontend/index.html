@@ -1205,8 +1205,7 @@
             <span class="route-chip-badge">RECOMMENDED</span>
           </div>
           <div class="route-chip-body">
-            <div class="route-chip-main" id="chip-safest-time">-- min</div>
-            <div class="route-chip-sub" id="chip-safest-dist">-- km</div>
+                        <div class="route-chip-main" id="chip-safest-dist">-- km</div>
           </div>
           <div class="route-chip-detail" style="display: none !important;"><span>Safety Score:</span> <b id="chip-safest-score">--/10</b></div>
           <div class="route-chip-detail" style="display: none !important;"><span>Crime Exposure:</span> <b id="chip-safest-crime">--/10</b></div>
@@ -1224,8 +1223,7 @@
             <div class="route-chip-title">Shortest</div>
           </div>
           <div class="route-chip-body">
-            <div class="route-chip-main" id="chip-fastest-time">-- min</div>
-            <div class="route-chip-sub" id="chip-fastest-dist">-- km</div>
+                        <div class="route-chip-main" id="chip-fastest-dist">-- km</div>
           </div>
           <div class="route-chip-detail" style="display: none !important;"><span>Safety Score:</span> <b id="chip-fastest-score">--/10</b></div>
           <div class="route-chip-detail" style="display: none !important;"><span>Crime Exposure:</span> <b id="chip-fastest-crime">--/10</b></div>
@@ -2056,7 +2054,7 @@
 
     function updateSelectorCard(type, metrics, facilities = []) {
       const timeVal = formatDurationMinutes(metrics.duration);
-      document.getElementById(`chip-${type}-time`).textContent = timeVal;
+      // document.getElementById(`chip-${type}-time`).textContent = timeVal;
       document.getElementById(`chip-${type}-dist`).textContent = `${metrics.distance_km} km`;
       document.getElementById(`chip-${type}-score`).textContent = `${metrics.safety_rating}/10`;
       document.getElementById(`chip-${type}-crime`).textContent = `${metrics.avg_crime_score}/10`;
