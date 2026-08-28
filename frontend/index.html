@@ -1174,7 +1174,7 @@
             <span class="inp-dot">🔵</span>
             <input id="src-in" type="text" placeholder="Search start location in Telangana…" autocomplete="off" spellcheck="false"/>
             <div class="input-actions">
-              <button class="input-action-btn" onclick="triggerVoiceSearch('src-in')" title="Voice Search">🎤</button>
+              
               <button class="input-action-btn" onclick="useGPSPosition('src-in', true)" title="GPS Position">🛰️</button>
               <button class="input-action-btn inp-clear" onclick="clearPointInput('src')" tabindex="-1">✕</button>
             </div>
@@ -1185,7 +1185,7 @@
             <span class="inp-dot">🟢</span>
             <input id="dst-in" type="text" placeholder="Search destination in Telangana…" autocomplete="off" spellcheck="false"/>
             <div class="input-actions">
-              <button class="input-action-btn" onclick="triggerVoiceSearch('dst-in')" title="Voice Search">🎤</button>
+              
               <button class="input-action-btn" onclick="useGPSPosition('dst-in', false)" title="GPS Position">🛰️</button>
               <button class="input-action-btn inp-clear" onclick="clearPointInput('dst')" tabindex="-1">✕</button>
             </div>
@@ -1642,30 +1642,6 @@
     /* ════════════════════════════════════════════════════════════════
        3. SPEECH SEARCH CONTROLLER
        ════════════════════════════════════════════════════════════════ */
-    function triggerVoiceSearch(inputId) {
-      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-        showToast('Voice search not supported in this browser.', 'warning');
-        return;
-      }
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const recognition = new SpeechRecognition();
-      recognition.lang = 'en-IN';
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
-      
-      showToast('🎤 Listening for location...', 'info');
-      recognition.start();
-      
-      recognition.onresult = (event) => {
-        const speechToText = event.results[0][0].transcript;
-        document.getElementById(inputId).value = speechToText;
-        document.getElementById(inputId).dispatchEvent(new Event('input'));
-      };
-      
-      recognition.onerror = (event) => {
-        showToast('Voice recognition error.', 'error');
-      };
-    }
 
     /* ════════════════════════════════════════════════════════════════
        4. AUTOCOMPLETE LOGIC (WITH KEYBOARD CONTROLS & RECENT SEARCHES)
