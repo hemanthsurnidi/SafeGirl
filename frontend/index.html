@@ -2292,17 +2292,7 @@
     }
 
     async function applyHotspotFilters(sourceEl) {
-      const dUnverified = document.getElementById('filter-unverified');
-      const mUnverified = document.getElementById('mobile-filter-unverified');
-      
       let showUnverified = true;
-      if (sourceEl) {
-        showUnverified = sourceEl.checked;
-        if (dUnverified && dUnverified !== sourceEl) dUnverified.checked = showUnverified;
-        if (mUnverified && mUnverified !== sourceEl) mUnverified.checked = showUnverified;
-      } else {
-        showUnverified = dUnverified ? dUnverified.checked : true;
-      }
 
       const category = document.getElementById('filter-category').value;
       const severity = document.getElementById('filter-severity').value;
