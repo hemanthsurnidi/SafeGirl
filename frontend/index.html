@@ -420,6 +420,14 @@
     }
 
     /* ═══════════ ROUTE SELECTOR STYLES ═══════════════════════════════ */
+    
+    /* Hide quick actions chip on desktop */
+    @media (min-width: 769px) {
+      .quick-actions-chip {
+        display: none !important;
+      }
+    }
+
     .route-selector-container {
       width: 100%;
       display: none;
@@ -785,7 +793,15 @@
       }
 
       /* Responsive Route Grid Overhaul */
-      .route-selector-container {
+      
+    /* Hide quick actions chip on desktop */
+    @media (min-width: 769px) {
+      .quick-actions-chip {
+        display: none !important;
+      }
+    }
+
+    .route-selector-container {
         display: grid !important;
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 6px !important;
