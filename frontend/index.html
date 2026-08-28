@@ -1224,12 +1224,10 @@
 
 
         <!-- Quick Actions (Replaces Balanced Slot) -->
-        <div class="quick-actions-chip" style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; align-items: center; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 4px; height: 100%;">
-          <button onclick="toggleTheme()" style="background:transparent; border:none; font-size:22px; cursor:pointer; width:40%; padding:2px; display:flex; justify-content:center;" title="Theme">🌓</button>
-          <button onclick="let cb = document.getElementById('ov-audits-quick'); cb.checked = !cb.checked; toggleOverlay('audits', cb);" style="background:transparent; border:none; font-size:22px; cursor:pointer; width:40%; padding:2px; display:flex; justify-content:center;" title="Heatmap">🔴</button>
-          <button onclick="let cb = document.getElementById('ov-havens-quick'); cb.checked = !cb.checked; toggleOverlay('havens', cb);" style="background:transparent; border:none; font-size:22px; cursor:pointer; width:40%; padding:2px; display:flex; justify-content:center;" title="Safe Havens">🏥</button>
-          <input type="checkbox" id="ov-audits-quick" checked style="display:none;">
-          <input type="checkbox" id="ov-havens-quick" checked style="display:none;">
+        <div class="quick-actions-chip" style="display: flex; gap: 6px; justify-content: flex-end; align-items: center; padding-right: 4px; height: 100%;">
+          <button class="icon-btn" onclick="toggleManualTheme()" style="background:var(--card); border:1px solid var(--border); font-size:18px; cursor:pointer; padding:8px; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1);" title="Theme">🌓</button>
+          <button class="icon-btn" onclick="let dt=document.getElementById('ov-audits'); if(dt){dt.checked=!dt.checked; toggleOverlay('audits',dt);}" style="background:var(--card); border:1px solid var(--border); font-size:18px; cursor:pointer; padding:8px; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1);" title="Heatmap">🔴</button>
+          <button class="icon-btn" onclick="let dt=document.getElementById('ov-havens'); if(dt){dt.checked=!dt.checked; toggleOverlay('havens',dt);}" style="background:var(--card); border:1px solid var(--border); font-size:18px; cursor:pointer; padding:8px; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1);" title="Safe Havens">🏥</button>
         </div>
 
         <!-- Fastest Chip -->
