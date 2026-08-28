@@ -325,11 +325,11 @@ async function calculate() {
     fitRouteBounds();
     const bothOk = fastResult.status === 'fulfilled' && safeResult.status === 'fulfilled';
     if (bothOk) {
-      setStatus('✅ Both routes drawn! 🟢 Green = Safest  ·  🔵 Blue = Fastest', 'ok');
+      setStatus('✅ Both routes drawn! 🟢 Green = Safest  ·  🔵 Blue = Shortest', 'ok');
     } else if (safeResult.status === 'fulfilled') {
       setStatus('✅ Safest route drawn. OSRM is currently offline.', 'ok');
     } else {
-      setStatus('✅ Fastest route drawn. Backend engine warming up…', 'ok');
+      setStatus('✅ Shortest route drawn. Backend engine warming up…', 'ok');
     }
   } else {
     setStatus('❌ Could not compute routes. Check your connection.', 'err');
