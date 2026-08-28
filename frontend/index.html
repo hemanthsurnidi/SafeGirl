@@ -47,6 +47,12 @@
     }
 
 
+    
+    .light-theme .floating-action-btn.primary,
+    .light-theme .floating-action-btn.primary span {
+      color: #111827 !important;
+    }
+
     .light-theme .card-title button,
     .light-theme .action-btn,
     .light-theme .icon-btn {
@@ -1215,6 +1221,16 @@
         </div>
 
         
+
+
+        <!-- Quick Actions (Replaces Balanced Slot) -->
+        <div class="quick-actions-chip" style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; align-items: center; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 4px; height: 100%;">
+          <button onclick="toggleTheme()" style="background:transparent; border:none; font-size:22px; cursor:pointer; width:40%; padding:2px; display:flex; justify-content:center;" title="Theme">🌓</button>
+          <button onclick="let cb = document.getElementById('ov-audits-quick'); cb.checked = !cb.checked; toggleOverlay('audits', cb);" style="background:transparent; border:none; font-size:22px; cursor:pointer; width:40%; padding:2px; display:flex; justify-content:center;" title="Heatmap">🔴</button>
+          <button onclick="let cb = document.getElementById('ov-havens-quick'); cb.checked = !cb.checked; toggleOverlay('havens', cb);" style="background:transparent; border:none; font-size:22px; cursor:pointer; width:40%; padding:2px; display:flex; justify-content:center;" title="Safe Havens">🏥</button>
+          <input type="checkbox" id="ov-audits-quick" checked style="display:none;">
+          <input type="checkbox" id="ov-havens-quick" checked style="display:none;">
+        </div>
 
         <!-- Fastest Chip -->
         <div class="route-chip" id="chip-fastest" onclick="activateRoute('fastest')"
