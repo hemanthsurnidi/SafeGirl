@@ -8,9 +8,9 @@ __pycache__/
 venv/
 ENV/
 
-# Large files exceeding GitHub's 100MB limit (we will upload this manually on HF)
-backend/data/hyderabad_drive.graphml
-backend/data/crime_records.db
+# Large files are now tracked via Git LFS - DO NOT add back to gitignore
+# backend/data/hyderabad_drive.graphml  <- tracked via .gitattributes (LFS)
+# backend/data/crime_records.db         <- tracked via .gitattributes (LFS)
 
 # Local agent logs and caches
 brain/
@@ -18,3 +18,4 @@ cache/
 .gemini/
 .idea/
 .vscode/
+
