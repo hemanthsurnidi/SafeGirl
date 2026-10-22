@@ -592,9 +592,16 @@ def score_osrm_route(coords, alpha, beta, distance_m, duration_sec):
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Initialize/connect database records
-    load_database_records()
-    # Load Hyderabad road graph
-    load_graph()
+    try:
+        load_database_records()
+    except Exception as e:
+        log.error(f"Failed to load database records: {e}")
+
+    # Load Hyderabad road graph safely
+    try:
+        load_graph()
+    except Exception as e:
+        log.error(f"Failed to load road graph: {e}. Fallback to OSRM mode enabled.")
     yield
 
 # ── FastAPI app ───────────────────────────────────────────────────────────────────
@@ -797,13 +804,10 @@ def safe_route(
     alpha:     float = Query(5.0, ge=0, le=20),
     beta:      float = Query(5.0, ge=0, le=20),
 ):
-    if not engine_ok:
-        raise HTTPException(503, "Routing engine is warming up. Try again in a few seconds.")
-
     def is_in_hyd(lat, lng):
         return (17.20 <= lat <= 17.65) and (78.20 <= lng <= 78.68)
 
-    use_local = is_in_hyd(start_lat, start_lng) and is_in_hyd(end_lat, end_lng)
+    use_local = engine_ok and is_in_hyd(start_lat, start_lng) and is_in_hyd(end_lat, end_lng)
     
     if use_local:
         log.info("Computing route using local Hyderabad Dijkstra engine...")
